@@ -10,6 +10,7 @@ def tekstovni_vmesnik():
 def prikazi_osnovni_zaslon():
     prikazi_trenutne_knjige()
     prikazi_knjige_cez_rok()
+    prikazi_prebrane_knjige()
     ukaz = preberi_ukaz()
     if ukaz == "dodaj":
         dodaj_knjigo()
@@ -19,7 +20,7 @@ def prikazi_osnovni_zaslon():
         preberi_knjigo()
     else:
         print("Oprostite, tega ukaza pa ne razumem. Prosimo izberite enega od ponujenih ukazov.")
-
+    print("\n" * 5)
 def preberi_ukaz():
     return input("Novo knjigo dodate z ukazom 'dodaj', nezaželeno odstranite z ukazom 'odstrani', če pa ste katero knjigo prebrali, vpišite ukaz 'preberi'. \n Kaj želite storiti? ")
 
@@ -50,7 +51,22 @@ def odstrani_knjigo():
         print("Te knjige sploh ni v vašem trenutnem seznamu. Ali ste se morda kje zmotili? ")
 
 def preberi_knjigo():
-    pass
+    knjiga = identifikacija_knjige()
+    naslov = getattr(knjiga, "naslov")
+    avtor = getattr(knjiga, "avtor")
+    zvrst = getattr(knjiga, "zvrst")
+    izposojena_ali_kupljena = getattr(knjiga, "izposojena_ali_kupljena")
+    rok_vracila = getattr(knjiga, "rok_vracila")
+    if knjiga in stanje.prebrane_knjige:
+        print("To knjigo ste že prebrali.")
+    elif knjiga in stanje.trenutne_knjige:
+            stanje.trenutne_knjige.remove(knjiga) ####
+            stanje.trenutne_knjige_prikaz.remove((naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila))
+            stanje.prebrane_knjige.append(knjiga)
+            stanje.prebrane_knjige_prikaz.append((naslov, avtor, zvrst))
+    else:
+        print("Te knjige pa sploh niste brali. Ali ste se morda kje zmotili? ")
+    
 
 def prikazi_trenutne_knjige():
     print("Knjige, ki jih trenutno berete so:")
@@ -85,13 +101,20 @@ def prikazi_knjige_cez_rok():
             zvrst = getattr(knjiga, "zvrst")
             izposojena_ali_kupljena = getattr(knjiga, "izposojena_ali_kupljena")
             rok_vracila = getattr(knjiga, "rok_vracila")
-            knjige_cez_rok.append((naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila))
+            knjige_cez_rok.append((naslov, avtor, zvrst, rok_vracila)) #vemo, da je knjiga izposojena
     if len(knjige_cez_rok) == 0:
-        print("Nimate knjig, ki jih je potrebno nujno vrniti.")
+        print("Nimate knjig, ki jih je nujno potrebno vrniti.")
     else:
         print("Naslednje knjige morate vrniti, saj zanje teče zamudnina: ")
         for i in knjige_cez_rok:
             print(i)
 
-
+def prikazi_prebrane_knjige():
+    if len(stanje.prebrane_knjige) == 0:
+        print("Zaenkrat še niste prebrali nobene knjige.")
+    else:
+        print("To so knjige, ki ste jih prebrali do sedaj: ")
+        for knjiga in stanje.prebrane_knjige_prikaz:
+            print(knjiga)
+        
 tekstovni_vmesnik()
