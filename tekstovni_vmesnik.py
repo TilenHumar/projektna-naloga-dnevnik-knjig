@@ -9,6 +9,7 @@ def tekstovni_vmesnik():
 
 def prikazi_osnovni_zaslon():
     prikazi_trenutne_knjige()
+    prikazi_knjige_cez_rok()
     ukaz = preberi_ukaz()
     if ukaz == "dodaj":
         dodaj_knjigo()
@@ -29,9 +30,12 @@ def dodaj_knjigo():
     zvrst = getattr(knjiga, "zvrst")
     izposojena_ali_kupljena = getattr(knjiga, "izposojena_ali_kupljena")
     rok_vracila = getattr(knjiga, "rok_vracila")
-    stanje.trenutne_knjige.append(knjiga) ####
-    stanje.trenutne_knjige_prikaz.append((naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila))
-    
+    if knjiga not in stanje.trenutne_knjige:
+        stanje.trenutne_knjige.append(knjiga) ####
+        stanje.trenutne_knjige_prikaz.append((naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila))
+    else:
+        print("To knjigo ste že dodali v seznam.")
+
 def odstrani_knjigo():
     knjiga = identifikacija_knjige()
     naslov = getattr(knjiga, "naslov")
@@ -50,10 +54,9 @@ def preberi_knjigo():
 
 def prikazi_trenutne_knjige():
     print("Knjige, ki jih trenutno berete so:")
-    i = 0
-    while i < len(stanje.trenutne_knjige_prikaz):
-        print(stanje.trenutne_knjige_prikaz[i])
-        i += 1
+    for i in stanje.trenutne_knjige_prikaz:
+        print(i)
+    
 
 def pozdravi_uporabnika():
     print("Pozdravljeni! To je vaš osebni dnevnik knjig.")
@@ -72,5 +75,23 @@ def identifikacija_knjige():
     else: 
         rok_vracila = None
     return model.Knjiga(naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila)
+
+def prikazi_knjige_cez_rok():
+    knjige_cez_rok = []
+    for knjiga in stanje.trenutne_knjige:
+        if knjiga.cez_rok():
+            naslov = getattr(knjiga, "naslov")
+            avtor = getattr(knjiga, "avtor")
+            zvrst = getattr(knjiga, "zvrst")
+            izposojena_ali_kupljena = getattr(knjiga, "izposojena_ali_kupljena")
+            rok_vracila = getattr(knjiga, "rok_vracila")
+            knjige_cez_rok.append((naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila))
+    if len(knjige_cez_rok) == 0:
+        print("Nimate knjig, ki jih je potrebno nujno vrniti.")
+    else:
+        print("Naslednje knjige morate vrniti, saj zanje teče zamudnina: ")
+        for i in knjige_cez_rok:
+            print(i)
+
 
 tekstovni_vmesnik()

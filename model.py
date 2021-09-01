@@ -1,5 +1,4 @@
-import datetime
-
+from datetime import date, datetime
 class Stanje:
     
     def __init__(self):
@@ -46,5 +45,6 @@ class Knjiga:
     
     def cez_rok(self):
         if self.rok_vracila != None:
-            zamujamo = self.rok < datetime.date.today()
-            return not self.prebrana and zamujamo
+            danes = datetime.now()
+            datum = datetime.strptime(self.rok_vracila, "%d.%m.%Y")
+            return datum <= danes
