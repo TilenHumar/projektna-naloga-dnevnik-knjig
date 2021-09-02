@@ -15,34 +15,37 @@ class Stanje:
 
     def vsebuje_knjigo(self, knjiga):
         return True if knjiga in self.trenutne_knjige else False
+
+    def vsebuje_knjigo_prebrane(self, knjiga):
+        return True if knjiga in self.prebrane_knjige else False
     
     def preberi_knjigo(self, knjiga):
         self.prebrane_knjige.append(knjiga)
 
 class Knjiga:
 
-    def __init__(self, naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila=None, prebrana=False, ocena=None):
+    def __init__(self, naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila="/"):
         self.naslov = naslov
         self.avtor = avtor
-        self.zvrst = zvrst
+        if zvrst == "leposlovje" or zvrst == "neleposlovje":
+            self.zvrst = zvrst
+        else:
+            raise ValueError("Zvrst knjige je 'leposlovje' ali 'neleposlovje'.")
         if izposojena_ali_kupljena == "izposojena" or izposojena_ali_kupljena == "kupljena":
             self.izposojena_ali_kupljena = izposojena_ali_kupljena
         else:
             raise ValueError("Knjiga mora biti 'izposojena' ali 'kupljena'.")
         self.rok_vracila = rok_vracila
-        self.prebrana = prebrana
-        self.ocena = ocena
 
     def __eq__(self, other):
         naslov_TF = (self.naslov == other.naslov)
         avtor_TF = (self.avtor == other.avtor)
         zvrst_TF = (self.zvrst == other.zvrst)
-        izposojena_ali_kupljena_TF = (self.izposojena_ali_kupljena == other.izposojena_ali_kupljena)
-        rok_vracila_TF = (self.rok_vracila == other.rok_vracila)
-        return naslov_TF and avtor_TF and zvrst_TF and izposojena_ali_kupljena_TF and rok_vracila_TF
+        return naslov_TF and avtor_TF and zvrst_TF
     
     def cez_rok(self):
-        if self.rok_vracila != None:
+        if self.rok_vracila != "/":
             danes = datetime.now()
             datum = datetime.strptime(self.rok_vracila, "%d.%m.%Y")
             return datum <= danes
+

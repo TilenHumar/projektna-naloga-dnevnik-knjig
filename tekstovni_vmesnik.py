@@ -31,8 +31,8 @@ def dodaj_knjigo():
     zvrst = getattr(knjiga, "zvrst")
     izposojena_ali_kupljena = getattr(knjiga, "izposojena_ali_kupljena")
     rok_vracila = getattr(knjiga, "rok_vracila")
-    if knjiga not in stanje.trenutne_knjige:
-        stanje.trenutne_knjige.append(knjiga) ####
+    if not stanje.vsebuje_knjigo(knjiga):
+        stanje.dodaj_knjigo(knjiga)
         stanje.trenutne_knjige_prikaz.append((naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila))
     else:
         print("To knjigo ste že dodali v seznam.")
@@ -44,8 +44,8 @@ def odstrani_knjigo():
     zvrst = getattr(knjiga, "zvrst")
     izposojena_ali_kupljena = getattr(knjiga, "izposojena_ali_kupljena")
     rok_vracila = getattr(knjiga, "rok_vracila")
-    if knjiga in stanje.trenutne_knjige:
-            stanje.trenutne_knjige.remove(knjiga) ####
+    if stanje.vsebuje_knjigo(knjiga):
+            stanje.odstrani_knjigo(knjiga)
             stanje.trenutne_knjige_prikaz.remove((naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila))
     else:
         print("Te knjige sploh ni v vašem trenutnem seznamu. Ali ste se morda kje zmotili? ")
@@ -57,16 +57,18 @@ def preberi_knjigo():
     zvrst = getattr(knjiga, "zvrst")
     izposojena_ali_kupljena = getattr(knjiga, "izposojena_ali_kupljena")
     rok_vracila = getattr(knjiga, "rok_vracila")
-    if knjiga in stanje.prebrane_knjige:
-        print("To knjigo ste že prebrali.")
-    elif knjiga in stanje.trenutne_knjige:
-            stanje.trenutne_knjige.remove(knjiga) ####
-            stanje.trenutne_knjige_prikaz.remove((naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila))
-            stanje.prebrane_knjige.append(knjiga)
-            stanje.prebrane_knjige_prikaz.append((naslov, avtor, zvrst))
+    if stanje.vsebuje_knjigo_prebrane(knjiga):
+        print("To knjigo ste že prebrali. Odstranjena je z vašega trenutnega seznama in jo lahko vrnete.")
+        stanje.odstrani_knjigo(knjiga)
+        stanje.trenutne_knjige_prikaz.remove((naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila))
+    elif stanje.vsebuje_knjigo(knjiga):
+        stanje.odstrani_knjigo(knjiga)
+        stanje.trenutne_knjige_prikaz.remove((naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila))
+        stanje.preberi_knjigo(knjiga)
+        stanje.prebrane_knjige_prikaz.append((naslov, avtor, zvrst))
     else:
         print("Te knjige pa sploh niste brali. Ali ste se morda kje zmotili? ")
-    
+
 
 def prikazi_trenutne_knjige():
     print("Knjige, ki jih trenutno berete so:")
@@ -89,7 +91,7 @@ def identifikacija_knjige():
     if izposojena_ali_kupljena == "izposojena":
         rok_vracila = input("Rok vračila: ")
     else: 
-        rok_vracila = None
+        rok_vracila = "/"
     return model.Knjiga(naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila)
 
 def prikazi_knjige_cez_rok():
@@ -99,7 +101,6 @@ def prikazi_knjige_cez_rok():
             naslov = getattr(knjiga, "naslov")
             avtor = getattr(knjiga, "avtor")
             zvrst = getattr(knjiga, "zvrst")
-            izposojena_ali_kupljena = getattr(knjiga, "izposojena_ali_kupljena")
             rok_vracila = getattr(knjiga, "rok_vracila")
             knjige_cez_rok.append((naslov, avtor, zvrst, rok_vracila)) #vemo, da je knjiga izposojena
     if len(knjige_cez_rok) == 0:
