@@ -21,32 +21,46 @@ def nova_vrstica():
     print("\n")
 
 def tekstovni_vmesnik():
+    global konec
+    konec = False
     nova_vrstica()
     pozdravi_uporabnika()
     nova_vrstica()
-    while True:
+    while konec != True:
         prikazi_osnovni_zaslon()
+        
+
+    
 
 def prikazi_osnovni_zaslon():
+    global konec
     prikazi_trenutne_knjige()
     nova_vrstica()
     prikazi_knjige_cez_rok()
     nova_vrstica()
     prikazi_prebrane_knjige()
     nova_vrstica()
-    ukaz = preberi_ukaz()
-    if ukaz == "dodaj":
-        dodaj_knjigo()
-    elif ukaz == "odstrani":
-        odstrani_knjigo()
-    elif ukaz == "preberi":
-        preberi_knjigo()
-    else:
-        print("Oprostite, tega ukaza pa ne razumem. Prosimo izberite enega od ponujenih ukazov.")
-    print("\n" * 5)
-
-def preberi_ukaz():
-    return input("Novo knjigo dodate z ukazom " + krepka_pisava('dodaj') + ", nezaželeno odstranite z ukazom " + krepka_pisava('odstrani') + ", če pa ste katero knjigo prebrali, vpišite ukaz " + krepka_pisava('preberi') + ". \n" + "Kaj želite storiti? ")
+    ukaz = True
+    while ukaz:
+        print("""
+        1) dodaj novo knjigo
+        2) odstrani knjigo
+        3) preberi knjigo
+        4)izhod
+        """)
+        ukaz = input("Izberite eno od ponujenih možnosti.")
+        if ukaz == "1":
+            dodaj_knjigo()
+        elif ukaz == "2":
+            odstrani_knjigo()
+        elif ukaz == "3":
+            preberi_knjigo()
+        elif ukaz == "4":
+            print("Hvala za uporabo programa, nasvidenje.")
+            konec = True
+            ukaz = None
+        else:
+            print("Izberite število med 1 in 4.")
 
 def dodaj_knjigo():
     knjiga = identifikacija_knjige()
