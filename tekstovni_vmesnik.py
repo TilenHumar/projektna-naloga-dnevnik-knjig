@@ -29,19 +29,16 @@ def tekstovni_vmesnik():
     while konec != True:
         prikazi_osnovni_zaslon()
         
-
-    
-
 def prikazi_osnovni_zaslon():
     global konec
-    prikazi_trenutne_knjige()
-    nova_vrstica()
-    prikazi_knjige_cez_rok()
-    nova_vrstica()
-    prikazi_prebrane_knjige()
-    nova_vrstica()
     ukaz = True
     while ukaz:
+        prikazi_trenutne_knjige()
+        nova_vrstica()
+        prikazi_knjige_cez_rok()
+        nova_vrstica()
+        prikazi_prebrane_knjige()
+        nova_vrstica()
         print("""
         1) dodaj novo knjigo
         2) odstrani knjigo
