@@ -45,10 +45,13 @@ class Stanje:
                 stevilo += 1
         return stevilo
 
-
+    def dodaj_oceno_prebrani(self, knjiga, ocena):
+        if knjiga in self.prebrane_knjige:
+            knjiga.dodaj_oceno(ocena)
+            
 class Knjiga:
 
-    def __init__(self, naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila="/"):
+    def __init__(self, naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila="/", ocena=None):
         self.naslov = naslov
         self.avtor = avtor
         if zvrst == "leposlovje" or zvrst == "neleposlovje":
@@ -60,6 +63,7 @@ class Knjiga:
         else:
             raise ValueError("Knjiga mora biti 'izposojena' ali 'kupljena'.")
         self.rok_vracila = rok_vracila
+        self.ocena = ocena
 
     def __eq__(self, other):
         naslov_TF = (self.naslov == other.naslov)
@@ -73,3 +77,5 @@ class Knjiga:
             datum = datetime.strptime(self.rok_vracila, "%d.%m.%Y")
             return datum <= danes
 
+    def dodaj_oceno(self, ocena):
+        self.ocena = ocena

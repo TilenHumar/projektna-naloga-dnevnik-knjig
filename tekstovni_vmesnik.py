@@ -86,10 +86,12 @@ def preberi_knjigo():
         stanje.odstrani_knjigo(knjiga)
         stanje.trenutne_knjige_prikaz.remove((naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila))
     elif stanje.vsebuje_knjigo(knjiga):
+        ocena = input("Ocenite prebrano knjigo, izbirajte med števili med 1 in 5: ")
+        stanje.dodaj_oceno_prebrani(knjiga, ocena)
         stanje.odstrani_knjigo(knjiga)
         stanje.trenutne_knjige_prikaz.remove((naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila))
         stanje.preberi_knjigo(knjiga)
-        stanje.prebrane_knjige_prikaz.append((naslov, avtor, zvrst))
+        stanje.prebrane_knjige_prikaz.append((naslov, avtor, zvrst, ocena))
     else:
         print("Te knjige pa sploh niste brali. Ali ste se morda kje zmotili? ")
 
@@ -128,7 +130,7 @@ def identifikacija_knjige():
         rok_vracila = input("Rok vračila: ")
     else: 
         rok_vracila = "/"
-    return model.Knjiga(naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila)
+    return model.Knjiga(naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila, None)
     
 def prikazi_knjige_cez_rok():
     knjige_cez_rok = []
