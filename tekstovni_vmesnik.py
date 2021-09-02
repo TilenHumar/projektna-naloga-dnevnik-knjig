@@ -1,16 +1,39 @@
 import model
-
 stanje = model.Stanje()
 
+class Izgled_pisave:
+
+    ZELENA = "\033[92m"
+    RDECA = "\033[91m"
+    KREPKO = "\033[1m"
+    KONEC = "\033[0m"
+
+def zelena_pisava(niz):
+    return Izgled_pisave.ZELENA + str(niz) +Izgled_pisave.KONEC
+
+def rdeca_pisava(niz):
+    return Izgled_pisave.RDECA + str(niz) +Izgled_pisave.KONEC
+
+def krepka_pisava(niz):
+    return Izgled_pisave.KREPKO + str(niz) +Izgled_pisave.KONEC
+
+def nova_vrstica():
+    print("\n")
+
 def tekstovni_vmesnik():
+    nova_vrstica()
     pozdravi_uporabnika()
+    nova_vrstica()
     while True:
         prikazi_osnovni_zaslon()
 
 def prikazi_osnovni_zaslon():
     prikazi_trenutne_knjige()
+    nova_vrstica()
     prikazi_knjige_cez_rok()
+    nova_vrstica()
     prikazi_prebrane_knjige()
+    nova_vrstica()
     ukaz = preberi_ukaz()
     if ukaz == "dodaj":
         dodaj_knjigo()
@@ -21,8 +44,9 @@ def prikazi_osnovni_zaslon():
     else:
         print("Oprostite, tega ukaza pa ne razumem. Prosimo izberite enega od ponujenih ukazov.")
     print("\n" * 5)
+
 def preberi_ukaz():
-    return input("Novo knjigo dodate z ukazom 'dodaj', nezaželeno odstranite z ukazom 'odstrani', če pa ste katero knjigo prebrali, vpišite ukaz 'preberi'. \n Kaj želite storiti? ")
+    return input("Novo knjigo dodate z ukazom " + krepka_pisava('dodaj') + ", nezaželeno odstranite z ukazom " + krepka_pisava('odstrani') + ", če pa ste katero knjigo prebrali, vpišite ukaz " + krepka_pisava('preberi') + ". \n" + "Kaj želite storiti? ")
 
 def dodaj_knjigo():
     knjiga = identifikacija_knjige()
@@ -71,9 +95,13 @@ def preberi_knjigo():
 
 
 def prikazi_trenutne_knjige():
-    print("Knjige, ki jih trenutno berete so:")
-    for i in stanje.trenutne_knjige_prikaz:
-        print(i)
+    if stanje.trenutne_knjige == []:
+        print("Trenutno ne berete nobene knjige. Začnite z branjem in svojemu napredku sledite s tem programom.")
+    else:
+        print("Knjige, ki jih trenutno berete so:")
+        for i in stanje.trenutne_knjige_prikaz:
+            print(i)
+        print("Skupno število knjig, ki jih trenutno berete: " + str(len(stanje.trenutne_knjige_prikaz)))
     
 
 def pozdravi_uporabnika():
@@ -83,17 +111,25 @@ def identifikacija_knjige():
     naslov = input("Naslov knjige: ")
     avtor = input("Ime avtorja: ")
     zvrst = input("Zvrst: ")
+    if zvrst == "leposlovje" or zvrst == "neleposlovje":
+        pass
+    else:
+        while zvrst != "leposlovje" and zvrst != "neleposlovje":
+            print("Zvrst knjige mora biti 'leposlovje' ali 'neleposlovje'! Poskusite še enkrat.")
+            zvrst = input("Zvrst: ")
     izposojena_ali_kupljena = input("Izposojena ali kupljena: ")
     if izposojena_ali_kupljena == "izposojena" or izposojena_ali_kupljena == "kupljena":
             pass
     else:
-        raise ValueError("Knjiga mora biti izposojena ali kupljena.")
+        while izposojena_ali_kupljena != "izposojena" and izposojena_ali_kupljena != "kupljena":
+            print("Knjiga mora biti 'izposojena' ali 'kupljena'. Poskusite še enkrat.")
+            izposojena_ali_kupljena = input("Izposojena ali kupljena: ")
     if izposojena_ali_kupljena == "izposojena":
         rok_vracila = input("Rok vračila: ")
     else: 
         rok_vracila = "/"
     return model.Knjiga(naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila)
-
+    
 def prikazi_knjige_cez_rok():
     knjige_cez_rok = []
     for knjiga in stanje.trenutne_knjige:
@@ -108,7 +144,8 @@ def prikazi_knjige_cez_rok():
     else:
         print("Naslednje knjige morate vrniti, saj zanje teče zamudnina: ")
         for i in knjige_cez_rok:
-            print(i)
+            print( rdeca_pisava(i))
+        print("Skupno število knjig čez rok: " + str(len(knjige_cez_rok)))
 
 def prikazi_prebrane_knjige():
     if len(stanje.prebrane_knjige) == 0:
@@ -116,6 +153,6 @@ def prikazi_prebrane_knjige():
     else:
         print("To so knjige, ki ste jih prebrali do sedaj: ")
         for knjiga in stanje.prebrane_knjige_prikaz:
-            print(knjiga)
-        
+            print(zelena_pisava(knjiga))
+  
 tekstovni_vmesnik()

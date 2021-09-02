@@ -21,6 +21,12 @@ class Stanje:
     
     def preberi_knjigo(self, knjiga):
         self.prebrane_knjige.append(knjiga)
+    
+    def stevilo_zamujenih(self):
+        stevilo = 0
+        for knjiga in self.trenutne_knjige:
+            if knjiga.cez_rok:
+                stevilo += 1 
 
 class Knjiga:
 
