@@ -48,7 +48,7 @@ class Stanje:
     def dodaj_oceno_prebrani(self, knjiga, ocena):
         if knjiga in self.prebrane_knjige:
             knjiga.dodaj_oceno(ocena)
-            
+    
 class Knjiga:
 
     def __init__(self, naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila="/", ocena=None):
