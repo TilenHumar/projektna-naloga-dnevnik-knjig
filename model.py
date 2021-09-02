@@ -26,7 +26,25 @@ class Stanje:
         stevilo = 0
         for knjiga in self.trenutne_knjige:
             if knjiga.cez_rok:
-                stevilo += 1 
+                stevilo += 1
+        return stevilo
+
+    def stevilo_leposlovnih(self):
+        stevilo = 0
+        for knjiga in self.prebrane_knjige:
+            zvrst_knjige = getattr(knjiga, "zvrst")
+            if zvrst_knjige == "leposlovje":
+                stevilo += 1
+        return stevilo
+    
+    def stevilo_neleposlovnih(self):
+        stevilo = 0
+        for knjiga in self.prebrane_knjige:
+            zvrst_knjige = getattr(knjiga, "zvrst")
+            if zvrst_knjige == "neleposlovje":
+                stevilo += 1
+        return stevilo
+
 
 class Knjiga:
 

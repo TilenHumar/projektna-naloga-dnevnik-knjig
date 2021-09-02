@@ -145,7 +145,8 @@ def prikazi_knjige_cez_rok():
         print("Naslednje knjige morate vrniti, saj zanje teče zamudnina: ")
         for i in knjige_cez_rok:
             print( rdeca_pisava(i))
-        print("Skupno število knjig čez rok: " + str(len(knjige_cez_rok)))
+        stevilo_cez_rok = stanje.stevilo_zamujenih()
+        print("Skupno število knjig čez rok: " + str(stevilo_cez_rok))
 
 def prikazi_prebrane_knjige():
     if len(stanje.prebrane_knjige) == 0:
@@ -154,5 +155,13 @@ def prikazi_prebrane_knjige():
         print("To so knjige, ki ste jih prebrali do sedaj: ")
         for knjiga in stanje.prebrane_knjige_prikaz:
             print(zelena_pisava(knjiga))
-  
+        if stanje.stevilo_leposlovnih() == 0 and stanje.stevilo_neleposlovnih() != 0:
+            print("Zaenkrat niste prebrali nobene leposlovne knjige in toliko neleposlovnih: " + str(stanje.stevilo_neleposlovnih()))
+        elif stanje.stevilo_leposlovnih() != 0 and stanje.stevilo_neleposlovnih() == 0:
+            print("Zaenkrat niste prebrali nobene neleposlovne knjige in toliko leposlovnih: " + str(stanje.stevilo_leposlovnih()))
+        else:
+            print("Prebrali ste toliko leposlovnih knjig: " + str(stanje.stevilo_leposlovnih()))
+            nova_vrstica()
+            print("Prebrali ste toliko neleposlovnih knjig: " + str(stanje.stevilo_neleposlovnih()))
+
 tekstovni_vmesnik()
