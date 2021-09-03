@@ -1,0 +1,11 @@
+% rebase('base.html')
+<form method="POST" action="/preberi_knjigo/">
+    ocena: <input type="text" name="ocena" value="{{polja.get("ocena",'')}}">
+    <input type="submit" value="Oceni!">
+
+    %if "naslov" in napake:
+    <p>{{ napake["naslov"] }}</p>
+    %end
+
+
+</form>

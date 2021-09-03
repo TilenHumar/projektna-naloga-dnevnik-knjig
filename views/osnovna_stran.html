@@ -1,0 +1,52 @@
+% rebase('base.html')
+<h3>Trenutne knjige:</h3>
+<ul>
+    %for indeks, knjiga in enumerate(trenutne_knjige):
+    <li>
+        ({{knjiga.naslov}}, {{knjiga.avtor}}, {{knjiga.zvrst}}, {{knjiga.izposojena_ali_kupljena}}, {{knjiga.rok_vracila}})
+        <form method="POST" action="/odstrani_knjigo/">
+            <input type="hidden" name="indeks" value="{{indeks}}">
+            <input type="submit" value="odstrani">
+        </form>
+        <form method="POST" action="/preberi_knjigo/">
+            <input type="hidden" name="indeks" value="{{indeks}}">
+            <input type="submit" value="preberi">
+        </form>
+    </li>
+    %end
+</ul>
+%if stevilo_trenutnih != 0:
+<p>Skupno število knjig, ki jih berete: {{stevilo_trenutnih}}</p>
+%else:
+<p>Trenutno ne berete nobene knjige. Začnite z branjem in si pomagajte s tem dnevnikom.</p>
+%end
+
+%if stevilo_leposlovnih == 0 and stevilo_neleposlovnih != 0:
+<h3>Prebrane knjige:</h3>
+
+%for knjiga in prebrane_knjige:
+<li>
+    ({{knjiga.naslov}}, {{knjiga.avtor}}, {{knjiga.zvrst}})
+</li>
+%end
+<p>Zaenkrat niste prebrali še nobene leposlovne knjige in toliko neleposlovnih: {{stevilo_neleposlovnih}}</p>
+<p>Skupno število prebranih knjig: {{stevilo_prebranih}}</p>
+
+%elif stevilo_leposlovnih != 0 and stevilo_neleposlovnih == 0:
+<h3>Prebrane knjige:</h3>
+
+%for knjiga in prebrane_knjige:
+<li>
+    ({{knjiga.naslov}}, {{knjiga.avtor}}, {{knjiga.zvrst}})
+</li>
+%end
+<p>Zaenkrat niste prebrali še nobene neleposlovne knjige in toliko leposlovnih: {{stevilo_leposlovnih}}</p>
+<p>Skupno število prebranih knjig: {{stevilo_prebranih}}</p>
+
+%else:
+<p>Zaenkrat niste prebrali še nobene knjige. Nadaljujte z branjem in si pomagajte s tem dnevnikom.</p>
+%end
+
+<div class="level-item">
+    <a class="button is-info" href="/dodaj_knjigo/">dodaj knjigo</a>
+</div>

@@ -1,9 +1,9 @@
 from model import Stanje, Knjiga
 
-IME_DATOTEKE = 'stanje.json'
 trenutne_knjige_prikaz = []
 prebrane_knjige_prikaz = []
 
+IME_DATOTEKE = 'stanje.json'
 try:
     moj_model = Stanje.preberi_iz_datoteke(IME_DATOTEKE)
 except FileNotFoundError:
@@ -129,11 +129,10 @@ def preberi_knjigo():
     elif moj_model.vsebuje_knjigo(knjiga):
         ocena = input("Ocenite prebrano knjigo, izbirajte med števili med 1 in 5: ")
         moj_model.dodaj_oceno_prebrani(knjiga, ocena)
-        moj_model.odstrani_knjigo(knjiga)
+        moj_model.preberi_knjigo(knjiga)
         trenutne_knjige_prikaz.remove(
             (naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila)
             )
-        moj_model.preberi_knjigo(knjiga)
         prebrane_knjige_prikaz.append((naslov, avtor, zvrst, ocena)
         )
     else:
