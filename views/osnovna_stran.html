@@ -55,6 +55,17 @@
 <div class="notification is-danger">
     Pozor, imate knjige, katerim je potekel rok izposoje. Prosimo, da jih vrnete v najkrajšem možnem času. Število
     preteklih knjig: <strong>{{stevilo_cez_rok}}</strong>
+    <div class="content is-normal">
+        <h4>Knjige čez rok:</h4>
+        <ul>
+            %for knjiga in seznam_cez_rok:
+            <li>
+                {{knjiga.naslov}}, {{knjiga.avtor}}, {{knjiga.zvrst}}, {{knjiga.izposojena_ali_kupljena}},
+                {{knjiga.rok_vracila}}
+            </li>
+            %end
+        </ul>
+    </div>
 </div>
 %end
 
@@ -73,7 +84,7 @@
         %end
     </ul>
     <p>Skupno ste prebrali toliko knjig: <strong>{{stevilo_prebranih}}</strong>. Od tega toliko leposlovnih:
-        {{stevilo_leposlovnih}} in toliko neleposlovnih: {{stevilo_neleposlovnih}}.</p>
+        <strong>{{stevilo_leposlovnih}}</strong> in toliko neleposlovnih: <strong>{{stevilo_neleposlovnih}}</strong>.</p>
 </div>
 %end
 

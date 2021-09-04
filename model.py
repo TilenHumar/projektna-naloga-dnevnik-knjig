@@ -27,13 +27,32 @@ class Stanje:
         self.prebrane_knjige.append(knjiga)
         self.trenutne_knjige.remove(knjiga)
 
+    def stevilo_trenutnih(self):
+        return len(self.trenutne_knjige)
+
+    def stevilo_prebranih(self):
+        return len(self.prebrane_knjige)
+    
+    def seznam_cez_rok(self):
+        seznam = []
+        for knjiga in self.trenutne_knjige:
+            if knjiga.cez_rok:
+                seznam.append(knjiga)
+        return seznam
 ###
     def stevilo_cez_rok(self):
         stevilo = 0
         for knjiga in self.trenutne_knjige:
-            if knjiga.cez_rok:
-                stevilo += 1
+            rok_vracila = getattr(knjiga, "rok_vracila")
+            if rok_vracila == "/":
+                pass
+            else:
+                danes = datetime.now()
+                datum = datetime.strptime(rok_vracila, "%d.%m.%Y")
+                if datum < danes:
+                    stevilo += 1
         return stevilo
+
 ###
 
     def stevilo_leposlovnih(self):

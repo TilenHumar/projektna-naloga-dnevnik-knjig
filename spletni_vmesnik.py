@@ -17,11 +17,12 @@ def osnovna_stran():
         "osnovna_stran.html",
         trenutne_knjige = moj_model.trenutne_knjige,
         prebrane_knjige = moj_model.prebrane_knjige,
-        stevilo_trenutnih = len(moj_model.trenutne_knjige),
-        stevilo_prebranih = len(moj_model.prebrane_knjige),
+        stevilo_trenutnih = moj_model.stevilo_trenutnih(),
+        stevilo_prebranih = moj_model.stevilo_prebranih(),
         stevilo_leposlovnih = moj_model.stevilo_leposlovnih(),
         stevilo_neleposlovnih = moj_model.stevilo_neleposlovnih(),
-        stevilo_cez_rok = moj_model.stevilo_cez_rok()
+        stevilo_cez_rok = moj_model.stevilo_cez_rok(),
+        seznam_cez_rok = moj_model.seznam_cez_rok()
         )
 
 @bottle.get("/dodaj_knjigo/")
@@ -35,8 +36,7 @@ def dodaj_knjigo_post():
     avtor = bottle.request.forms.getunicode("avtor")
     zvrst = bottle.request.forms.getunicode("zvrst")
     izposojena_ali_kupljena = bottle.request.forms.getunicode("izposojena_ali_kupljena")
-    if izposojena_ali_kupljena == "izposojena":
-        rok_vracila = bottle.request.forms.getunicode("rok_vracila")
+    rok_vracila = bottle.request.forms.getunicode("rok_vracila")
     if izposojena_ali_kupljena == "kupljena":
         rok_vracila = "/"
     knjiga = Knjiga(naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila)

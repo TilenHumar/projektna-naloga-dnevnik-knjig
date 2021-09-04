@@ -188,13 +188,13 @@ def prikazi_knjige_cez_rok():
             rok_vracila = getattr(knjiga, "rok_vracila")
             # vemo, da je knjiga izposojena
             knjige_cez_rok.append((naslov, avtor, zvrst, rok_vracila))
-    if len(knjige_cez_rok) == 0:
+    if moj_model.stevilo_cez_rok() == 0:
         print("Nimate knjig, ki jih je nujno potrebno vrniti.")
     else:
         print("Naslednje knjige morate vrniti, saj zanje teče zamudnina: ")
         for i in knjige_cez_rok:
             print(rdeca_pisava(i))
-        print("Skupno število knjig čez rok: " + str(len(knjige_cez_rok)))
+        print("Skupno število knjig čez rok: " + str(moj_model.stevilo_cez_rok()))
 
 
 def prikazi_prebrane_knjige():
