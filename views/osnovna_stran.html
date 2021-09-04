@@ -1,5 +1,7 @@
 % rebase('base.html')
 
+<h1>Pozdravljen {{uporabnik}}!</h1>
+
 %if stevilo_trenutnih != 0:
 <div class="content is-normal">
     <h1>Trenute knjige:</h1>
@@ -17,7 +19,7 @@
                 <p class="control">
                 <form method="POST" action="/odstrani_knjigo/">
                     <input type="hidden" name="indeks" value="{{indeks}}">
-                    <button class="button is-danger">
+                    <button class="button is-danger is-small">
                         <span>odstrani</span>
                     </button>
                 </form>
@@ -25,7 +27,7 @@
                 <p class="control">
                 <form method="POST" action="/preberi_knjigo/">
                     <input type="hidden" name="indeks" value="{{indeks}}">
-                    <button class="button is-info">
+                    <button class="button is-info is-small">
                         <span>preberi</span>
                     </button>
                 </form>

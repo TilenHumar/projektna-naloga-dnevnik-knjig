@@ -1,9 +1,40 @@
 from datetime import date, datetime
-import re
+from os import stat
 import time
 import json
-from os import strerror
 
+class Uporabnik:
+    def __init__(self, uporabnisko_ime, stanje):
+        self.uporabnisko_ime = uporabnisko_ime
+        self.stanje = stanje
+
+    def v_slovar(self):
+        return{
+            "uporabnisko_ime": self.uporabnisko_ime,
+            "stanje": self.stanje.v_slovar()
+        }
+
+    @staticmethod
+    def iz_slovarja(slovar):
+        uporabnisko_ime = slovar["uporabnisko_ime"]
+        stanje = Stanje.iz_slovarja(slovar["stanje"])
+        return Uporabnik(uporabnisko_ime, stanje)
+        
+
+    def shrani_v_datoteko(self):
+        with open(Uporabnik.ime_uporabnikove_datoteke(self.uporabnisko_ime), 'w') as datoteka:
+            slovar = self.v_slovar()
+            json.dump(slovar, datoteka)
+
+    @staticmethod
+    def ime_uporabnikove_datoteke(uporabnisko_ime):
+        return f"{uporabnisko_ime}.json"
+
+    @staticmethod
+    def preberi_iz_datoteke(uporabnisko_ime):
+        with open(Uporabnik.ime_uporabnikove_datoteke(uporabnisko_ime)) as datoteka:
+            slovar = json.load(datoteka)
+            return Uporabnik.iz_slovarja(slovar)
 
 class Stanje:
 
@@ -39,7 +70,7 @@ class Stanje:
             if knjiga.cez_rok:
                 seznam.append(knjiga)
         return seznam
-###
+
     def stevilo_cez_rok(self):
         stevilo = 0
         for knjiga in self.trenutne_knjige:
@@ -52,8 +83,6 @@ class Stanje:
                 if datum < danes:
                     stevilo += 1
         return stevilo
-
-###
 
     def stevilo_leposlovnih(self):
         stevilo = 0
