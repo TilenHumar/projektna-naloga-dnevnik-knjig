@@ -26,6 +26,7 @@ class Uporabnik:
             slovar = self.v_slovar()
             json.dump(slovar, datoteka)
 
+
     @staticmethod
     def ime_uporabnikove_datoteke(uporabnisko_ime):
         return f"{uporabnisko_ime}.json"
@@ -67,8 +68,14 @@ class Stanje:
     def seznam_cez_rok(self):
         seznam = []
         for knjiga in self.trenutne_knjige:
-            if knjiga.cez_rok:
-                seznam.append(knjiga)
+            rok_vracila = getattr(knjiga, "rok_vracila")
+            if rok_vracila == "/":
+                pass
+            else:
+                danes = datetime.now()
+                datum = datetime.strptime(rok_vracila, "%d.%m.%Y")
+                if datum < danes:
+                    seznam.append(knjiga)
         return seznam
 
     def stevilo_cez_rok(self):

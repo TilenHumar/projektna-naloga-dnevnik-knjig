@@ -4,9 +4,6 @@ import bottle
 from datetime import date
 from model import Stanje, Knjiga, Uporabnik
 
-
-
-IME_DATOTEKE = 'stanje.json'
 PISKOTEK_UPORABNISKO_IME = "uporabnisko_ime"
 SKRIVNOST ="moja_skrivnost"
 
@@ -24,13 +21,14 @@ def osnovna_stran():
         stevilo_neleposlovnih = uporabnik.stanje.stevilo_neleposlovnih(),
         stevilo_cez_rok = uporabnik.stanje.stevilo_cez_rok(),
         seznam_cez_rok = uporabnik.stanje.seznam_cez_rok(),
-        uporabnik = uporabnik
+        uporabnik = uporabnik,
+        uporabnisko_ime = uporabnik.uporabnisko_ime
         )
 
 @bottle.get("/dodaj_knjigo/")
 def dodaj_knjigo_get():
-    trenutni_uporabnik()
-    return bottle.template("dodaj_knjigo.html", napake={}, polja={})
+    uporabnik = trenutni_uporabnik()
+    return bottle.template("dodaj_knjigo.html", napake={}, polja={}, uporabnik = uporabnik)
 
 
 @bottle.post("/dodaj_knjigo/")
@@ -59,8 +57,8 @@ def odstrani_knjigo():
 
 @bottle.get("/oceni_knjigo/")
 def dodaj_knjigo_get():
-    trenutni_uporabnik()
-    return bottle.template("oceni_knjigo.html", napake={}, polja={})
+    uporabnik = trenutni_uporabnik()
+    return bottle.template("oceni_knjigo.html", napake={}, polja={}, uporabnik = uporabnik)
 
 @bottle.post("/preberi_knjigo/")
 def preberi_knjigo():
@@ -95,17 +93,17 @@ def odjava_post():
 
 @bottle.post("/prijava/")
 def prijava_post():
-    geslo = bottle.request.forms.getunicode("geslo")
     uporabnisko_ime = bottle.request.forms.getunicode("uporabnisko_ime")
-    if geslo == "geslo":
-        bottle.response.set_cookie(PISKOTEK_UPORABNISKO_IME, uporabnisko_ime, path="/", secret=SKRIVNOST)
-        bottle.redirect("/")
-    else:
-        return bottle.template("prijava.html", napaka="Vnesli ste napačno geslo, prosimo poskusite še enkrat.")
-
+    bottle.response.set_cookie(PISKOTEK_UPORABNISKO_IME, uporabnisko_ime, path="/", secret=SKRIVNOST)
+    bottle.redirect("/")
 
 @bottle.error(404)
 def error_404(error):
     return "Ta stran ne obstaja!"
+
+@bottle.post("/odjava/")
+def odjava():
+    bottle.response.delete_cookie(PISKOTEK_UPORABNISKO_IME, path="/")
+    bottle.redirect("/")
 
 bottle.run(reloader=True, debug=True)

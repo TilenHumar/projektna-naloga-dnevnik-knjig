@@ -23,14 +23,14 @@
 <body>
 	<section class="hero is-info">
 		<div class="hero-body">
-		  <p class="title">
-			Dnevnik knjig
-		  </p>
-		  <p class="subtitle">
-			Postanite knjižnji molj, ki ste si vedno želeli!
-		  </p>
+			<p class="title">
+				Dnevnik knjig
+			</p>
+			<p class="subtitle">
+				Postanite knjižnji molj, ki ste si vedno želeli!
+			</p>
 		</div>
-	  </section>
+	</section>
 
 	<section class="section">
 		{{!base}}
@@ -38,12 +38,18 @@
 </body>
 <footer class="footer">
 	<div class="content has-text-centered">
+
+		% if defined('uporabnik'):
+		<form method="POST" action="/odjava/">
+			<button class="button is-light">
+				Odjavi se
+			</button>
+		</form>
+		%end
 		<p>
 			<strong>Dnevnik knjig</strong> by <a href="https://github.com/TilenHumar">Tilen Humar</a>
 
 		</p>
 	</div>
 </footer>
-
 </html>
-© 2021 GitHub, Inc.
