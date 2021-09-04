@@ -13,16 +13,21 @@
         <li>
             {{knjiga.naslov}}, {{knjiga.avtor}}, {{knjiga.zvrst}}, {{knjiga.izposojena_ali_kupljena}},
             {{knjiga.rok_vracila}}
-            <div class="field is-grouped">
+            <div class="field has-addons">
                 <p class="control">
                 <form method="POST" action="/odstrani_knjigo/">
                     <input type="hidden" name="indeks" value="{{indeks}}">
-                    <button class="button is-info is-rounded">odstrani</button>
+                    <button class="button is-danger">
+                        <span>odstrani</span>
+                    </button>
                 </form>
-
+                </p>
+                <p class="control">
                 <form method="POST" action="/preberi_knjigo/">
                     <input type="hidden" name="indeks" value="{{indeks}}">
-                    <button class="button is-info is-rounded">preberi</button>
+                    <button class="button is-info">
+                        <span>preberi</span>
+                    </button>
                 </form>
                 </p>
             </div>
@@ -54,7 +59,7 @@
 %end
 
 <div class="level-item">
-    <a class="button is-info is-rounded" href="/dodaj_knjigo/">dodaj knjigo</a>
+    <a class="button is-info" href="/dodaj_knjigo/">dodaj knjigo</a>
 </div>
 
 %if stevilo_leposlovnih != 0 and stevilo_neleposlovnih != 0:

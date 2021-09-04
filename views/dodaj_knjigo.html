@@ -1,21 +1,71 @@
 % rebase('base.html')
 <form method="POST" action="/dodaj_knjigo/">
-    naslov: <input type="text" name="naslov" value="{{polja.get("naslov",'')}}">
-    avtor: <input type="text" name="avtor" value="{{polja.get("avtor",'')}}">
-    zvrst: <input type="text" name="zvrst" value="{{polja.get("zvrst",'')}}">
-    izposojena_ali_kupljena: <input type="text" name="izposojena_ali_kupljena" value="{{polja.get("izposojena_ali_kupljena",'')}}">
-    rok_vracila: <input type="text" name="rok_vracila" value="{{polja.get("rok_vracila",'')}}">
-    <input type="submit" value="dodaj!">
-    
-    %if "naslov" in napake:
-    <p>{{ napake["naslov"] }}</p>
-    %elif "avtor" in napake:
-    <p>{{ napake["avtor"] }}</p>
-    %elif "zvrst" in napake:
-    <p>{{ napake["zvrst"] }}</p>
-    %elif "izposojena_ali_kupljena" in napake:
-    <p>{{ napake["izposojena_ali_kupljena"] }}</p>
-    %elif "rok_vracila" in napake:
-    <p>{{ napake["rok_vracila"] }}</p>
-    %end
+
+    <div class="field">
+        <label class="label">Naslov</label>
+        <input class="input" name="naslov" type="text" placeholder="Naslov knjige" value="{{polja.get("naslov",'')}}">
+
+        %if "naslov" in napake:
+        <p>{{ napake["naslov"] }}</p>
+        %end
+
+    </div>
+
+    <div class="field">
+        <label class="label">Avtor</label>
+
+        <input class="input" name="avtor" type="text" placeholder="Avtor knjige" value="{{polja.get("avtor",'')}}">
+
+
+        %if "avtor" in napake:
+        <p>{{ napake["avtor"] }}</p>
+        %end
+
+    </div>
+
+    <div class="field">
+        <label class="label">Zvrst</label>
+        <input class="input" name="zvrst" type="text" placeholder="Zvrst" value="{{polja.get("zvrst",'')}}">
+
+
+        %if "zvrst" in napake:
+        <p>{{ napake["zvrst"] }}</p>
+        %end
+
+    </div>
+
+    <div class="field">
+        <label class="label">Izposojena ali kupljena</label>
+
+        <input class="input" name="izposojena_ali_kupljena" type="text" placeholder="Izposojena ali kupljena"
+            value="{{polja.get("izposojena_ali_kupljena",'')}}">
+
+
+        %if "izposojena_ali_kupljena" in napake:
+        <p>{{ napake["izposojena_ali_kupljena"] }}</p>
+        %end
+
+    </div>
+
+    <div class="field">
+        <label class="label">Rok vračila</label>
+
+        <input class="input" name="rok_vracila" type="text" placeholder="Rok vračila" value="{{polja.get("rok_vracila",'')}}">
+
+
+        %if "rok_vracila" in napake:
+        <p>{{ napake["rok_vracila"] }}</p>
+        %end
+
+    </div>
+
+    <div class="field is-grouped">
+        <div class="control">
+            <button class="button is-info">Dodaj</button>
+        </div>
+        <div class="control">
+            <a class="button is-info is-light" href="/">Prekliči</a>
+        </div>
+    </div>
+
 </form>
