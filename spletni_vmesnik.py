@@ -1,4 +1,5 @@
 from io import SEEK_CUR
+from os import error
 from sys import api_version, path
 import bottle
 from datetime import date
@@ -40,11 +41,26 @@ def dodaj_knjigo_post():
     izposojena_ali_kupljena = bottle.request.forms.getunicode("izposojena_ali_kupljena")
     rok_vracila = bottle.request.forms.getunicode("rok_vracila")
     if izposojena_ali_kupljena == "kupljena":
-        rok_vracila = "/"
-    knjiga = Knjiga(naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila)
-    uporabnik.stanje.dodaj_knjigo(knjiga)
-    shrani_stanje(uporabnik)
-    bottle.redirect("/")
+        rok_vracila = "/"    
+    if naslov:
+        if avtor:
+            if zvrst == "leposlovje" or zvrst == "neleposlovje":
+                if izposojena_ali_kupljena == "izposojena" or izposojena_ali_kupljena == "kupljena":
+                    if izposojena_ali_kupljena == "izposojena" and rok_vracila != None:
+                        knjiga = Knjiga(naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila)
+                        uporabnik.stanje.dodaj_knjigo(knjiga)
+                        shrani_stanje(uporabnik)
+                        bottle.redirect("/")
+                    else:
+                        return bottle.template("opozorilo_datum_vracila.html", uporabnik = uporabnik)
+                else:
+                    return bottle.template("opozorilo_kupljena_ali_izposojena.html", uporabnik = uporabnik)
+            else:
+                return bottle.template("opozorilo_zvrst.html", uporabnik = uporabnik)
+        else:
+            return bottle.template("opozorilo_avtor.html", uporabnik = uporabnik)
+    else:
+        return bottle.template("opozorilo_naslov.html", uporabnik = uporabnik)
 
 @bottle.post("/odstrani_knjigo/")
 def odstrani_knjigo():

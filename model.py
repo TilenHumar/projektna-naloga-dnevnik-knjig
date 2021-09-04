@@ -138,28 +138,14 @@ class Stanje:
             slovar = json.load(datoteka)
             return Stanje.iz_slovarja(slovar)
 
-    def preveri_podatke_nove_knjige(self, naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila):
-            napake = {}
-            if not naslov:
-                napake["naslov"] = "Prosimo, vnesite naslov knjige."
-            if not avtor:
-                napake["avtor"] = "Prosimo, vnesite avtorja-ico knjige."
-            if zvrst != "leposlovje" or zvrst != "neleposlovje":
-                napake[zvrst] = "Zvrst mora biti 'leposlovje' ali 'neleposlovje'."
-            if izposojena_ali_kupljena != "izposojena" or izposojena_ali_kupljena != "kupljena":
-                napake[izposojena_ali_kupljena] = "Knjiga mora biti 'izposojena' ali 'kupljena'."
-            if izposojena_ali_kupljena == "izposojena" and not rok_vracila:
-                napake[rok_vracila] = "Izposojena knjiga mora imeti datum vračila."
-            knjiga = Knjiga(naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila)
-            if self.vsebuje_knjigo(knjiga):
-                napake["naslov"] = "Ta knjiga je že v vašem trenutnem seznamu."
-            return napake
-
+##
     def preveri_podatke_ocena(self, ocena):
         napake = {}
         if ocena not in range(1,6):
             napake["ocena"] = "Ocena mora biti med 1 in 5."
         return napake
+##
+
 
 class Knjiga:
 
