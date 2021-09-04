@@ -28,12 +28,12 @@ class Stanje:
         self.trenutne_knjige.remove(knjiga)
 
 ###
-    def stevilo_zamujenih(self):
+    def stevilo_cez_rok(self):
         stevilo = 0
         for knjiga in self.trenutne_knjige:
             if knjiga.cez_rok:
                 stevilo += 1
-        return stevilo 
+        return stevilo
 ###
 
     def stevilo_leposlovnih(self):

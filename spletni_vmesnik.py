@@ -20,7 +20,8 @@ def osnovna_stran():
         stevilo_trenutnih = len(moj_model.trenutne_knjige),
         stevilo_prebranih = len(moj_model.prebrane_knjige),
         stevilo_leposlovnih = moj_model.stevilo_leposlovnih(),
-        stevilo_neleposlovnih = moj_model.stevilo_neleposlovnih()
+        stevilo_neleposlovnih = moj_model.stevilo_neleposlovnih(),
+        stevilo_cez_rok = moj_model.stevilo_cez_rok()
         )
 
 @bottle.get("/dodaj_knjigo/")
