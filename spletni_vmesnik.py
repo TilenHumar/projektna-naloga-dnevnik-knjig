@@ -46,7 +46,7 @@ def dodaj_knjigo_post():
         if avtor:
             if zvrst == "leposlovje" or zvrst == "neleposlovje":
                 if izposojena_ali_kupljena == "izposojena" or izposojena_ali_kupljena == "kupljena":
-                    if izposojena_ali_kupljena == "izposojena" and rok_vracila != None:
+                    if (izposojena_ali_kupljena == "izposojena" and rok_vracila != None) or izposojena_ali_kupljena == "kupljena":
                         knjiga = Knjiga(naslov, avtor, zvrst, izposojena_ali_kupljena, rok_vracila)
                         uporabnik.stanje.dodaj_knjigo(knjiga)
                         shrani_stanje(uporabnik)
@@ -71,10 +71,6 @@ def odstrani_knjigo():
     shrani_stanje(uporabnik)
     bottle.redirect("/")
 
-@bottle.get("/oceni_knjigo/")
-def dodaj_knjigo_get():
-    uporabnik = trenutni_uporabnik()
-    return bottle.template("oceni_knjigo.html", napake={}, polja={}, uporabnik = uporabnik)
 
 @bottle.post("/preberi_knjigo/")
 def preberi_knjigo():

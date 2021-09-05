@@ -1,5 +1,15 @@
 %rebase('base.html')
-<form method="POST">
-    <input type="text" name="uporabnisko_ime">
-    <input type="submit" value="Prijavi se!">
-</form>
+<div class="container is-fluid">
+    <div class="notification is-info">
+        Za vstop je potrebna prijava. Prosimo vpišite svoje <strong>uporabniško ime</strong>.
+    </div>
+    <form method="POST">
+
+        <div class="field">
+            <input type="text" name="uporabnisko_ime" placeholder="Uporabniško ime">
+            <input type="submit" value="Prijavi se!">
+        </div>
+    </form>
+
+
+</div>
