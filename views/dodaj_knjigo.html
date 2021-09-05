@@ -4,59 +4,27 @@
     <div class="field">
         <label class="label">Naslov</label>
         <input class="input" name="naslov" type="text" placeholder="Naslov knjige" value="{{polja.get("naslov",'')}}">
-
-        %if "naslov" in napake:
-        <p>{{ napake["naslov"] }}</p>
-        %end
-
     </div>
 
     <div class="field">
         <label class="label">Avtor</label>
-
         <input class="input" name="avtor" type="text" placeholder="Avtor knjige" value="{{polja.get("avtor",'')}}">
-
-
-        %if "avtor" in napake:
-        <p>{{ napake["avtor"] }}</p>
-        %end
-
     </div>
 
     <div class="field">
         <label class="label">Zvrst</label>
         <input class="input" name="zvrst" type="text" placeholder="Zvrst" value="{{polja.get("zvrst",'')}}">
-
-
-        %if "zvrst" in napake:
-        <p>{{ napake["zvrst"] }}</p>
-        %end
-
     </div>
 
     <div class="field">
         <label class="label">Izposojena ali kupljena</label>
-
         <input class="input" name="izposojena_ali_kupljena" type="text" placeholder="Izposojena ali kupljena"
             value="{{polja.get("izposojena_ali_kupljena",'')}}">
-
-
-        %if "izposojena_ali_kupljena" in napake:
-        <p>{{ napake["izposojena_ali_kupljena"] }}</p>
-        %end
-
     </div>
 
     <div class="field">
         <label class="label">Rok vračila</label>
-
         <input class="input" name="rok_vracila" type="text" placeholder="dd.mm.yyyy" value="{{polja.get("rok_vracila",'')}}">
-
-
-        %if "rok_vracila" in napake:
-        <p>{{ napake["rok_vracila"] }}</p>
-        %end
-
     </div>
 
     <div class="field is-grouped">

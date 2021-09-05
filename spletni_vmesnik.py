@@ -1,6 +1,3 @@
-from io import SEEK_CUR
-from os import error
-from sys import api_version, path
 import bottle
 from datetime import date
 from model import Stanje, Knjiga, Uporabnik
@@ -8,7 +5,42 @@ from model import Stanje, Knjiga, Uporabnik
 PISKOTEK_UPORABNISKO_IME = "uporabnisko_ime"
 SKRIVNOST ="moja_skrivnost"
 
+def shrani_stanje(uporabnik):
+    uporabnik.shrani_v_datoteko()
 
+def trenutni_uporabnik():
+    uporabnisko_ime = bottle.request.get_cookie(PISKOTEK_UPORABNISKO_IME, secret=SKRIVNOST)
+    if uporabnisko_ime:
+        try:
+            return Uporabnik.preberi_iz_datoteke(uporabnisko_ime)
+        except FileNotFoundError:
+            return Uporabnik(uporabnisko_ime, Stanje())
+    else:
+        bottle.redirect("/prijava/")
+
+#prikaz prijavne strani
+@bottle.get("/prijava/")
+def prijava_get():
+    return bottle.template("prijava.html")
+
+#prijava uporabnika
+@bottle.post("/prijava/")
+def prijava_post():
+    uporabnisko_ime = bottle.request.forms.getunicode("uporabnisko_ime")
+    bottle.response.set_cookie(PISKOTEK_UPORABNISKO_IME, uporabnisko_ime, path="/", secret=SKRIVNOST)
+    bottle.redirect("/")
+
+#odjava uporabnika
+@bottle.post("/odjava/")
+def odjava_post():
+    bottle.response.delete_cookie(PISKOTEK_UPORABNISKO_IME, path="/")
+    bottle.redirect("/")
+
+@bottle.error(404)
+def error_404(error):
+    return "Ta stran ne obstaja!"
+
+#osnovna stran
 @bottle.get("/")
 def osnovna_stran():
     uporabnik = trenutni_uporabnik()
@@ -26,12 +58,13 @@ def osnovna_stran():
         uporabnisko_ime = uporabnik.uporabnisko_ime
         )
 
+#prikaži stran za dodajanje knjig
 @bottle.get("/dodaj_knjigo/")
 def dodaj_knjigo_get():
     uporabnik = trenutni_uporabnik()
-    return bottle.template("dodaj_knjigo.html", napake={}, polja={}, uporabnik = uporabnik)
+    return bottle.template("dodaj_knjigo.html", polja={}, uporabnik = uporabnik)
 
-
+#dodajanje knjig
 @bottle.post("/dodaj_knjigo/")
 def dodaj_knjigo_post():
     uporabnik = trenutni_uporabnik()
@@ -62,6 +95,7 @@ def dodaj_knjigo_post():
     else:
         return bottle.template("opozorilo_naslov.html", uporabnik = uporabnik)
 
+#odstranjevanje knjig
 @bottle.post("/odstrani_knjigo/")
 def odstrani_knjigo():
     uporabnik = trenutni_uporabnik()
@@ -71,7 +105,7 @@ def odstrani_knjigo():
     shrani_stanje(uporabnik)
     bottle.redirect("/")
 
-
+#prebiranje knjig
 @bottle.post("/preberi_knjigo/")
 def preberi_knjigo():
     uporabnik = trenutni_uporabnik()
@@ -81,41 +115,4 @@ def preberi_knjigo():
     shrani_stanje(uporabnik)
     bottle.redirect("/")
 
-def shrani_stanje(uporabnik):
-    uporabnik.shrani_v_datoteko()
-
-def trenutni_uporabnik():
-    uporabnisko_ime = bottle.request.get_cookie(PISKOTEK_UPORABNISKO_IME, secret=SKRIVNOST)
-    if uporabnisko_ime:
-        try:
-            return Uporabnik.preberi_iz_datoteke(uporabnisko_ime)
-        except FileNotFoundError:
-            return Uporabnik(uporabnisko_ime, Stanje())
-    else:
-        bottle.redirect("/prijava/")
-
-@bottle.get("/prijava/")
-def prijava_get():
-    return bottle.template("prijava.html", napaka=None)
-
-@bottle.post("/odjava/")
-def odjava_post():
-    bottle.response.delete_cookie(PISKOTEK_UPORABNISKO_IME, path="/")
-    bottle.redirect("/")
-
-@bottle.post("/prijava/")
-def prijava_post():
-    uporabnisko_ime = bottle.request.forms.getunicode("uporabnisko_ime")
-    bottle.response.set_cookie(PISKOTEK_UPORABNISKO_IME, uporabnisko_ime, path="/", secret=SKRIVNOST)
-    bottle.redirect("/")
-
-@bottle.error(404)
-def error_404(error):
-    return "Ta stran ne obstaja!"
-
-@bottle.post("/odjava/")
-def odjava():
-    bottle.response.delete_cookie(PISKOTEK_UPORABNISKO_IME, path="/")
-    bottle.redirect("/")
-
-bottle.run(reloader=True, debug=True)
+bottle.run()
